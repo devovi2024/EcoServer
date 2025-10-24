@@ -4,6 +4,7 @@ const router = express.Router();
 const ProductController = require("../controllers/ProductController");
 const UserController = require("../controllers/UserController");
 const AuthVerify = require("../middleware/AuthVerify");
+const { WishList, CreateWishList, RemoveWishList } = require("../controllers/WishListController");
 
 router.get("/ProductBrandList", ProductController.ProductBrandList);
 router.get("/ProductCategoryList", ProductController.ProductCategoryList);
@@ -23,5 +24,14 @@ router.get("/UserLogout", AuthVerify, UserController.UserLogout);
 router.post("/UserRegister", AuthVerify, UserController.UserRegister);
 router.post("/UserUpdateProfile", AuthVerify, UserController.UserUpdateProfile);
 router.get("/UserReadProfile", AuthVerify, UserController.UserReadProfile);
+
+
+
+router.get("/", WishList);
+router.post("/", CreateWishList);
+router.delete("/", RemoveWishList);
+
+
+
 
 module.exports = router;
