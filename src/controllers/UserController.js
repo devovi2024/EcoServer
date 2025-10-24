@@ -1,44 +1,45 @@
 const {
-  UserLoginService,
-  VerifyUserService,
-  UserLogoutService,
+  UserOTPService,
+  VerifyOTPService,
+  LogoutService,
   CreateUserService,
   UpdateUserProfileService,
   ReadUserProfileService,
 } = require("../services/UserServices");
 
-// User login
-exports.UserLogin = async (req, res) => {
-  await UserLoginService(req);
-  res.status(200).json({ status: "success", message: "User logged in successfully" });
+exports.UserOTP = async (req, res) => {
+  let result = await UserOTPService(req);
+  res.status(200).json(result);
 };
 
-// Verify user session or token
 exports.UserVerifyLogin = async (req, res) => {
-  await VerifyUserService(req);
-  res.status(200).json({ status: "success", message: "User verified successfully" });
+  let result = await VerifyOTPService(req);
+  if (result.status === "success") {
+    let cookieOptions = {
+      expires: new Date(Date.now() + 30*24*60*60*1000),
+      httpOnly: true,
+    };
+    res.cookie("token", result.token, cookieOptions);
+  }
+  res.status(200).json(result);
 };
 
-// User logout
 exports.UserLogout = async (req, res) => {
-  await UserLogoutService(req);
-  res.status(200).json({ status: "success", message: "User logged out successfully" });
+  let result = await LogoutService(res);
+  res.status(200).json(result);
 };
 
-// User registration
 exports.UserRegister = async (req, res) => {
-  await CreateUserService(req);
-  res.status(201).json({ status: "success", message: "User registered successfully" });
+  let result = await CreateUserService(req);
+  res.status(201).json(result);
 };
 
-// Update user profile
 exports.UserUpdateProfile = async (req, res) => {
-  await UpdateUserProfileService(req);
-  res.status(200).json({ status: "success", message: "User profile updated successfully" });
+  let result = await UpdateUserProfileService(req);
+  res.status(200).json(result);
 };
 
-// Read user profile
 exports.UserReadProfile = async (req, res) => {
-  await ReadUserProfileService(req);
-  res.status(200).json({ status: "success", message: "User profile fetched successfully" });
+  let result = await ReadUserProfileService(req);
+  res.status(200).json(result);
 };

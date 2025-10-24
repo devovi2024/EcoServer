@@ -25,3 +25,7 @@ const EmailSend = async (EmailTo, EmailText, EmailSubject) =>{
     return await transport.sendMail(mailOptions)
 }
 
+
+module.exports = {
+    EmailSend,
+};
