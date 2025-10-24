@@ -343,6 +343,10 @@ exports.ProductReviewListService = async (req, res) => {
     let ProjectionStage = {
       $project: {
         "profiles._id": 0,
+        "des": 1,
+        "rating": 1,
+        "profile_cus_name": 1,
+
         "profiles.createdAt": 0,
         "profiles.updatedAt": 0,
         createdAt: 0,
