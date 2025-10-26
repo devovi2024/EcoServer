@@ -7,6 +7,6 @@ const DataSchema = mongoose.Schema({
     size: { type: String, required: true },
     quantity: { type: String, required: true },
 }, { timestamps: true , versionKey: false});
-
+ 
 const CartModel = mongoose.model('carts', DataSchema);
 module.exports = CartModel;
