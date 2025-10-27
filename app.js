@@ -11,15 +11,18 @@ const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 const router = require("./src/routes/api");
 
-const URL = "mongodb+srv://arfanhosenovi204_db_user:zY7mpKsTegzJgZ9S@cluster0.emsuaok.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+// MongoDB connection
+const URL = "mongodb+srv://arfanhosenovi204_db_user:GA5JY6CGAHiF39dJ@cluster0.k1iqvqu.mongodb.net/?appName=Cluster0";
 const options = {
   autoIndex: true,
-  useNewUrlParser: true
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 };
 
-mongoose.connect(URL, options)
+mongoose.connect(URL, { autoIndex: true })
   .then(() => console.log("Database Connected Successfully"))
   .catch((err) => console.error("Database Connection Failed:", err));
+
 
 app.use(helmet());
 app.use(hpp());
@@ -35,7 +38,7 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-app.use("/api/v1", router);
+app.use("/api/", router);
 app.use(express.static(path.join(__dirname, "client/dist")));
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "client/dist", "index.html"));

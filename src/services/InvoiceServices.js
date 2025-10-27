@@ -6,7 +6,7 @@ const CartModel = require("../models/CartModel");
 const ProfileModel = require("../models/ProfileModel");
 const InvoiceModel = require("../models/InvoiceModel");
 const InvoiceProductModel = require("../models/InvoiceProductModel");
-const PaymentSettingModel = require("../models/PaymentSettingModel"); 
+const PaymentSettingModel = require("../models/PaymentSettingsModel"); 
 
 const CreateInvoiceService = async (req) => {
   try {

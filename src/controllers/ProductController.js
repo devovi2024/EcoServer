@@ -2,71 +2,72 @@ const {
   ProductBrandListService,
   ProductCategoryService,
   ProductSliderListService,
-  ProductListByBrandServcie,
+  ProductListByBrandService,
   ProductListByCategoryService,
   ProductListBySimilarService,
   ProductListByKeywordService,
   ProductListByRemarkService,
   ProductDetailsService,
   ProductReviewListService,
+  ProductCreateReviewService
 } = require("../services/ProductServices");
 
 // Brand List
-exports.ProductBrandList = async (req, res) => {
+const ProductBrandList = async (req, res) => {
   let result = await ProductBrandListService(req, res);
   res.status(200).json(result);
 };
 
 // Category List
-exports.ProductCategoryList = async (req, res) => {
+const ProductCategoryList = async (req, res) => {
   let result = await ProductCategoryService(req, res);
   res.status(200).json(result);
 };
 
 // Slider List
-exports.ProductSliderList = async (req, res) => {
+const ProductSliderList = async (req, res) => {
   let result = await ProductSliderListService(req, res);
   res.status(200).json(result);
 };
 
 // Product List by Brand
-exports.ProductListByBrand = async (req, res) => {
-  let result = await ProductListByBrandServcie(req, res);
+const ProductListByBrand = async (req, res) => {
+  let result = await ProductListByBrandService(req, res);
   res.status(200).json(result);
 };
 
 // Product List by Category
-exports.ProductListByCategory = async (req, res) => {
+const ProductListByCategory = async (req, res) => {
   let result = await ProductListByCategoryService(req, res);
   res.status(200).json(result);
 };
 
 // Product List by Remark
-exports.ProductListByRemark = async (req, res) => {
+const ProductListByRemark = async (req, res) => {
   let result = await ProductListByRemarkService(req, res);
   res.status(200).json(result);
 };
 
 // Product List by Similar Category
-exports.ProductListBySimilar = async (req, res) => {
+const ProductListBySimilar = async (req, res) => {
   let result = await ProductListBySimilarService(req, res);
   res.status(200).json(result);
 };
 
 // Product Details
-exports.ProductDetails = async (req, res) => {
+const ProductDetails = async (req, res) => {
   let result = await ProductDetailsService(req, res);
   res.status(200).json(result);
 };
 
 // Product List by Keyword
-exports.ProductListByKeyword = async (req, res) => {
+const ProductListByKeyword = async (req, res) => {
   let result = await ProductListByKeywordService(req, res);
   res.status(200).json(result);
 };
 
 // Product Review List
-exports.ProductReviewList = async (req, res) => {
+const ProductReviewList = async (req, res) => {
   try {
     let result = await ProductReviewListService(req, res);
     res.status(200).json(result);
@@ -75,9 +76,14 @@ exports.ProductReviewList = async (req, res) => {
   }
 };
 
-
-exports.ProductCreateReview = async (req, res) => {
-  res.status(200).json({ status: "pending", message: "Review create route coming soon" });
+// Create Product Review
+const ProductCreateReview = async (req, res) => {
+  try {
+    let result = await ProductCreateReviewService(req, res);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ status: "fail", message: error.message });
+  }
 };
 
 module.exports = {

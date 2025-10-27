@@ -1,6 +1,6 @@
 const BrandModel = require("../models/BrandModel");
 const CategoryModel = require("../models/CategoryModel");
-const SliderModel = require("../models/SliderModel");
+const SliderModel = require("../models/ProductSliderModel");
 const ProductModel = require("../models/ProductModel");
 const ProductDetailsModel = require("../models/ProductDetailsModel");
 const ReviewModel = require("../models/ReviewModel");
@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
 // Product Brand List
-exports.ProductBrandListService = async (req, res) => {
+const ProductBrandListService = async (req, res) => {
   try {
     let data = await BrandModel.find();
     return { status: "success", data: data };
@@ -18,7 +18,7 @@ exports.ProductBrandListService = async (req, res) => {
 };
 
 // Product Category List
-exports.ProductCategoryService = async (req, res) => {
+const ProductCategoryService = async (req, res) => {
   try {
     let data = await CategoryModel.find();
     return { status: "success", data: data };
@@ -28,7 +28,7 @@ exports.ProductCategoryService = async (req, res) => {
 };
 
 // Product Slider List
-exports.ProductSliderListService = async (req, res) => {
+const ProductSliderListService = async (req, res) => {
   try {
     let data = await SliderModel.find();
     return { status: "success", data: data };
@@ -38,7 +38,7 @@ exports.ProductSliderListService = async (req, res) => {
 };
 
 // Product List By Brand
-exports.ProductListByBrandServcie = async (req, res) => {
+const ProductListByBrandService = async (req, res) => {
   try {
     let BrandID = new ObjectId(req.params.BrandID);
     let MatchStage = { $match: { brandID: BrandID } };
@@ -85,7 +85,7 @@ exports.ProductListByBrandServcie = async (req, res) => {
 };
 
 // Product List By Category
-exports.ProductListByCategoryService = async (req, res) => {
+const ProductListByCategoryService = async (req, res) => {
   try {
     let CategoryID = new ObjectId(req.params.CategoryID);
     let MatchStage = { $match: { categoryID: CategoryID } };
@@ -132,7 +132,7 @@ exports.ProductListByCategoryService = async (req, res) => {
 };
 
 // Product List By Remark
-exports.ProductListByRemarkService = async (req, res) => {
+const ProductListByRemarkService = async (req, res) => {
   try {
     let Remark = req.params.Remark;
     let MatchStage = { $match: { remark: Remark } };
@@ -179,7 +179,7 @@ exports.ProductListByRemarkService = async (req, res) => {
 };
 
 // Product List By Similar
-exports.ProductListBySimilarService = async (req, res) => {
+const ProductListBySimilarService = async (req, res) => {
   try {
     let CategoryID = new ObjectId(req.params.CategoryID);
     let MatchStage = { $match: { categoryID: CategoryID } };
@@ -228,7 +228,7 @@ exports.ProductListBySimilarService = async (req, res) => {
 };
 
 // Product Details
-exports.ProductDetailsService = async (req, res) => {
+const ProductDetailsService = async (req, res) => {
   try {
     let ProductID = new ObjectId(req.params.ProductID);
     let MatchStage = { $match: { _id: ProductID } };
@@ -277,7 +277,7 @@ exports.ProductDetailsService = async (req, res) => {
 };
 
 // Product List By Keyword
-exports.ProductListByKeywordService = async (req, res) => {
+const ProductListByKeywordService = async (req, res) => {
   try {
     let SearchRegex = { $regex: req.params.Keyword, $options: "i" };
     let SearchParams = [{ title: SearchRegex }, { shortDescription: SearchRegex }];
@@ -326,8 +326,27 @@ exports.ProductListByKeywordService = async (req, res) => {
   }
 };
 
+// Review Create
+const ProductCreateReviewService = async (req) => {
+  try {
+    let user_id = req.headers.user_id;
+    let reqBody = req.body;
+
+    let data = await ReviewModel.create({
+      productID: reqBody["product_id"],
+      userID: user_id,
+      des: reqBody["des"],
+      ratting: reqBody["ratting"],
+    });
+
+    return { status: "success", data: data };
+  } catch (error) {
+    return { status: "fail", data: error.message.toString() };
+  }
+};
+
 // Product Review List
-exports.ProductReviewListService = async (req, res) => {
+const ProductReviewListService = async (req, res) => {
   try {
     let ProductID = new ObjectId(req.params.ProductID);
     let MatchStage = { $match: { productID: ProductID } };
@@ -343,14 +362,9 @@ exports.ProductReviewListService = async (req, res) => {
     let ProjectionStage = {
       $project: {
         "profiles._id": 0,
-        "des": 1,
-        "rating": 1,
-        "profile_cus_name": 1,
-
-        "profiles.createdAt": 0,
-        "profiles.updatedAt": 0,
-        createdAt: 0,
-        updatedAt: 0,
+        des: 1,
+        ratting: 1,
+        "profiles.cus_name": 1,
       },
     };
 
@@ -371,13 +385,12 @@ module.exports = {
   ProductBrandListService,
   ProductCategoryService,
   ProductSliderListService,
-  ProductListByBrandServcie,
+  ProductListByBrandService,
   ProductListByCategoryService,
-  ProductListBySimilarService,
-  ProductListByKeywordService,
   ProductListByRemarkService,
+  ProductListBySimilarService,
   ProductDetailsService,
+  ProductListByKeywordService,
+  ProductCreateReviewService,
   ProductReviewListService,
 };
-
-

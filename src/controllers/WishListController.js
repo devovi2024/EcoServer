@@ -1,4 +1,4 @@
-const { WishListService, CreateWishListService, RemoveWishListService } = require('../services/WishListService');
+const { WishListService, CreateWishListService, RemoveWishListService } = require('../services/WishListServices');
 
 exports.WishList = async (req, res) => {
     let result = await WishListService(req);
