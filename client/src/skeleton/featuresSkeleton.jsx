@@ -1,28 +1,16 @@
-import React from 'react';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
-import Lottie from 'lottie-react';
-import ImagePlaceholder from '../assets/image/image.json'; 
+// src/featuresSkeleton/index.jsx
+import React from "react";
 
 const FeaturesSkeleton = () => {
-  const slides = 3; 
-
   return (
-    <div className="flex gap-4 overflow-x-auto p-4">
-      {Array(slides)
-        .fill(0)
-        .map((_, index) => (
-          <div key={index} className="flex-shrink-0 w-56 flex flex-col gap-2">
-            <div className="w-full h-36 rounded-lg overflow-hidden">
-              <Lottie animationData={ImagePlaceholder} loop={true} />
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <Skeleton height={20} width="80%" />
-              <Skeleton height={16} width="60%" />
-            </div>
-          </div>
-        ))}
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 animate-pulse">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="bg-white rounded-2xl shadow p-6 text-center">
+          <div className="h-20 w-20 bg-gray-300 rounded-full mx-auto mb-4" />
+          <div className="h-4 bg-gray-300 rounded w-3/4 mx-auto mb-2" />
+          <div className="h-3 bg-gray-200 rounded w-5/6 mx-auto" />
+        </div>
+      ))}
     </div>
   );
 };

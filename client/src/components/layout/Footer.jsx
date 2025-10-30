@@ -5,7 +5,6 @@ const Footer = () => {
   return (
     <footer className="relative bg-[#0f172a] text-gray-300 overflow-hidden">
 
-      {/* ---------- Neon Animated Background ---------- */}
       <div className="absolute inset-0 flex justify-between opacity-10">
         <div className="w-1 h-full bg-gradient-to-b from-blue-400 via-purple-500 to-pink-400 animate-pulse-slow"></div>
         <div className="w-1 h-full bg-gradient-to-b from-green-400 via-yellow-300 to-red-400 animate-pulse-slow delay-200"></div>
@@ -14,7 +13,6 @@ const Footer = () => {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-4 gap-10">
 
-        {/* ---------- Brand & Vision ---------- */}
         <div className="space-y-4">
           <h2 className="text-3xl font-extrabold text-white tracking-widest animate-pulse">OviStore</h2>
           <p className="text-gray-400">
@@ -30,7 +28,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* ---------- Quick Shop Links ---------- */}
         <div>
           <h3 className="text-white font-bold mb-4 border-b border-gray-600 pb-2">Quick Links</h3>
           <ul className="space-y-2 text-gray-400">
@@ -42,7 +39,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* ---------- Product Categories ---------- */}
         <div>
           <h3 className="text-white font-bold mb-4 border-b border-gray-600 pb-2">Categories</h3>
           <ul className="space-y-2 text-gray-400">
@@ -54,7 +50,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* ---------- Newsletter & Deals ---------- */}
         <div>
           <h3 className="text-white font-bold mb-4 border-b border-gray-600 pb-2">Deals & Updates</h3>
           <p className="text-gray-400 mb-4">
@@ -74,7 +69,6 @@ const Footer = () => {
             </button>
           </form>
 
-          {/* ---------- SSL / Payment Features ---------- */}
           <div className="mt-6 space-y-2">
             <h4 className="text-gray-300 font-semibold">Secure Payments</h4>
             <div className="flex gap-3 mt-2">
@@ -103,9 +97,8 @@ const Footer = () => {
 
       </div>
 
-      {/* ---------- Bottom futuristic wave ---------- */}
       <div className="relative z-10 border-t border-gray-700 py-6 text-center text-gray-500 text-sm tracking-widest">
-        © {new Date().getFullYear()} OviStore. Europe x Africa Fusion | AI-curated ecommerce experience. Secure Payments ✔️
+        © {new Date().getFullYear()} OviStore. 
       </div>
 
     </footer>

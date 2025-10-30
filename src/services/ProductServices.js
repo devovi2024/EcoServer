@@ -28,61 +28,66 @@ const ProductCategoryService = async (req, res) => {
 };
 
 // Product Slider List
-const ProductSliderListService = async (req, res) => {
+// Product Slider List
+const ProductSliderListService = async () => {
   try {
-    let data = await SliderModel.find();
-    return { status: "success", data: data };
+    // Find all sliders safely
+    let data = await SliderModel.find().lean(); // lean() gives plain JS objects
+    if (!data || data.length === 0) {
+      return { status: "success", data: [], message: "No sliders found" };
+    }
+    return { status: "success", data };
   } catch (error) {
-    return { status: "fail", data: error.message.toString() };
+    console.error("Slider service error:", error.message);
+    return { status: "fail", data: [], message: error.message.toString() };
   }
 };
+
 
 // Product List By Brand
 const ProductListByBrandService = async (req, res) => {
   try {
-    let BrandID = new ObjectId(req.params.BrandID);
-    let MatchStage = { $match: { brandID: BrandID } };
-    let JoinWithBrandStage = {
-      $lookup: {
-        from: "brands",
-        localField: "brandID",
-        foreignField: "_id",
-        as: "brands",
-      },
-    };
-    let JoinWithCategoryStage = {
-      $lookup: {
-        from: "categories",
-        localField: "categoryID",
-        foreignField: "_id",
-        as: "categories",
-      },
-    };
-    let UnwindBrandStage = { $unwind: "$brands" };
-    let UnwindCategoryStage = { $unwind: "$categories" };
-    let ProjectionStage = {
-      $project: {
-        "brands._id": 0,
-        "categories._id": 0,
-        createdAt: 0,
-        updatedAt: 0,
-      },
-    };
+    const BrandID = new mongoose.Types.ObjectId(req.params.BrandID);
 
-    let data = await ProductModel.aggregate([
-      MatchStage,
-      JoinWithBrandStage,
-      JoinWithCategoryStage,
-      UnwindBrandStage,
-      UnwindCategoryStage,
-      ProjectionStage,
+    const data = await ProductModel.aggregate([
+      { $match: { brandID: BrandID } },
+      {
+        $lookup: {
+          from: "brands",
+          localField: "brandID",
+          foreignField: "_id",
+          as: "brand",
+        },
+      },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "categoryID",
+          foreignField: "_id",
+          as: "category",
+        },
+      },
+      { $unwind: "$brand" },
+      { $unwind: "$category" },
+      {
+        $project: {
+          title: 1,
+          price: 1,
+          image: 1,
+          remark: 1,
+          "brand.BrandName": 1,
+          "category.CategoryName": 1,
+        },
+      },
     ]);
 
-    return { status: "success", data: data };
+    return { status: "success", data };
   } catch (error) {
+    console.error("Error in ProductListByBrandService:", error.message);
     return { status: "fail", data: error.message.toString() };
   }
 };
+
 
 // Product List By Category
 const ProductListByCategoryService = async (req, res) => {
