@@ -9,7 +9,8 @@ const {
   ProductListByRemarkService,
   ProductDetailsService,
   ProductReviewListService,
-  ProductCreateReviewService
+  ProductCreateReviewService,
+  ListByFilterService, 
 } = require("../services/ProductServices");
 
 // Brand List
@@ -86,6 +87,16 @@ const ProductCreateReview = async (req, res) => {
   }
 };
 
+// Product List by Filter (Category, Brand, Price)
+const ProductListByFilter = async (req, res) => {
+  try {
+    let result = await ListByFilterService(req);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+};
+
 module.exports = {
   ProductBrandList,
   ProductCategoryList,
@@ -98,4 +109,5 @@ module.exports = {
   ProductDetails,
   ProductReviewList,
   ProductCreateReview,
+  ProductListByFilter, 
 };

@@ -21,6 +21,10 @@ router.get("/ProductDetails/:ProductID", ProductController.ProductDetails);
 router.get("/ProductReviewList/:ProductID", ProductController.ProductReviewList);
 router.post("/ProductCreateReview", AuthVerify, ProductController.ProductCreateReview);
 
+
+router.post("/ProductListByFilter", ProductController.ProductListByFilter);
+
+
 //  User Routes 
 router.get("/UserOTP/:email", UserController.UserOTP);
 router.get("/UserVerifyLogin/:email/:otp", UserController.UserVerifyLogin);
