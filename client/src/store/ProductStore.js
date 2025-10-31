@@ -130,6 +130,23 @@ const ProductStore = create((set, get) => ({
   SetSearchKeyword: (Keyword) => {
     set({ SearchKeyword: Keyword });
   },
+
+
+ListByFilterRequest: async (postBody) => {
+  try {
+    set({ ListProduct: null });
+    const res = await axios.post("/api/ProductListByFilter", postBody);
+    set({
+      ListProduct: res.data?.status === "success" ? res.data.data : [],
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Filter request error:", error);
+    set({ ListProduct: [] });
+    return { status: "error", message: "Filter request failed" };
+  }
+}
+
 }));
 
 export default ProductStore;
