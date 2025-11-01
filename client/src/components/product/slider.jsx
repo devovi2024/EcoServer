@@ -10,14 +10,12 @@ import "swiper/css/pagination";
 const Slider = () => {
   const { SliderList, SliderListRequest } = ProductStore();
 
-  // Fetch slider list if not present
   useEffect(() => {
     if (!SliderList) {
-      SliderListRequest?.(); // optional chaining in case it's undefined
+      SliderListRequest();
     }
   }, [SliderList, SliderListRequest]);
 
-  // Loading state
   if (!SliderList || SliderList.length === 0) {
     return <SliderSkeleton />;
   }
@@ -37,7 +35,6 @@ const Slider = () => {
           {SliderList.map((item, index) => (
             <SwiperSlide key={index}>
               <div className="flex flex-col md:flex-row bg-white rounded-md shadow-sm overflow-hidden hover:shadow-md transition duration-300">
-                {/* Left Content */}
                 <div className="md:w-1/2 p-2 flex flex-col justify-center">
                   <h2 className="text-base md:text-lg font-semibold text-gray-900 mb-1">
                     {item.title}
@@ -54,8 +51,6 @@ const Slider = () => {
                     </button>
                   </div>
                 </div>
-
-                {/* Right Image */}
                 <div className="md:w-1/2">
                   <img
                     src={item.img1}

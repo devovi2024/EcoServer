@@ -1,26 +1,29 @@
-import React from 'react';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
-import Lottie from 'lottie-react';
-import ImagePlaceholder from '../assets/image/image.json'; 
-const SliderSkeleton = ({ slides = 5 }) => {
-  return (
-    <div className="flex gap-4 overflow-x-auto p-4">
-      {Array(slides)
-        .fill(0)
-        .map((_, index) => (
-          <div key={index} className="flex-shrink-0 w-56 flex flex-col gap-2">
-            <div className="w-full h-36 rounded-lg overflow-hidden">
-              <Lottie animationData={ImagePlaceholder} loop={true} />
-            </div>
+import React from "react";
 
-            <div className="flex flex-col gap-1">
-              <Skeleton height={20} width="80%" />
-              <Skeleton height={16} width="60%" />
+const SliderSkeleton = () => {
+  return (
+    <section className="py-6 bg-gray-50">
+      <div className="container mx-auto px-4 max-w-4xl">
+        <div className="space-y-4">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex flex-col md:flex-row bg-white rounded-md shadow-sm overflow-hidden animate-pulse"
+            >
+              <div className="md:w-1/2 p-4 flex flex-col justify-center space-y-3">
+                <div className="h-5 w-32 bg-gray-300 rounded"></div>
+                <div className="h-4 w-48 bg-gray-300 rounded"></div>
+                <div className="flex items-center gap-2">
+                  <div className="h-5 w-16 bg-gray-300 rounded"></div>
+                  <div className="h-8 w-20 bg-gray-300 rounded"></div>
+                </div>
+              </div>
+              <div className="md:w-1/2 h-32 md:h-40 bg-gray-300"></div>
             </div>
-          </div>
-        ))}
-    </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 };
 

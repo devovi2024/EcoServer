@@ -9,7 +9,7 @@ const Brands = () => {
 
   useEffect(() => {
     if (!BrandList || BrandList.length === 0) {
-      BrandListRequest?.(); 
+      BrandListRequest();
     }
   }, [BrandList, BrandListRequest]);
 
@@ -54,7 +54,7 @@ const Brands = () => {
 
           <div className="col-span-full flex justify-center mt-4">
             <Link
-              to="/brands" // safer than /by-brand/:id
+              to="/brands"
               className="flex items-center gap-1 text-orange-600 font-medium hover:text-orange-800 transition-colors duration-300"
             >
               Explore All <FaArrowRight />

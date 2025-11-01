@@ -2,118 +2,134 @@ import { create } from "zustand";
 import axios from "axios";
 
 const ProductStore = create((set, get) => ({
+  // ===== State =====
   ListProduct: null,
   BrandList: null,
   CategoryList: null,
   SliderList: null,
-  ProductDetailsData: {},
-  ProductReviews: {},
+  Details: null,            // Single product details object
+  ProductReviews: [],       // Product reviews array
   SearchKeyword: "",
+  isLoading: false,
 
+  // ===== Brand List =====
   BrandListRequest: async () => {
+    set({ isLoading: true });
     try {
       const res = await axios.get("/api/ProductBrandList");
-      set({ BrandList: res.data?.status === "success" ? res.data.data : [] });
+      set({ BrandList: res.data?.status === "success" ? res.data.data : [], isLoading: false });
     } catch (error) {
       console.error(error);
-      set({ BrandList: [] });
+      set({ BrandList: [], isLoading: false });
     }
   },
 
+  // ===== Category List =====
   CategoryListRequest: async () => {
+    set({ isLoading: true });
     try {
       const res = await axios.get("/api/ProductCategoryList");
-      set({ CategoryList: res.data?.status === "success" ? res.data.data : [] });
+      set({ CategoryList: res.data?.status === "success" ? res.data.data : [], isLoading: false });
     } catch (error) {
       console.error(error);
-      set({ CategoryList: [] });
+      set({ CategoryList: [], isLoading: false });
     }
   },
 
+  // ===== Slider List =====
   SliderListRequest: async () => {
+    set({ isLoading: true });
     try {
       const res = await axios.get("/api/ProductSliderList");
-      set({ SliderList: res.data?.status === "success" ? res.data.data : [] });
+      set({ SliderList: res.data?.status === "success" ? res.data.data : [], isLoading: false });
     } catch (error) {
       console.error(error);
-      set({ SliderList: [] });
+      set({ SliderList: [], isLoading: false });
     }
   },
 
+  // ===== Product List Filters =====
   ListByProductRemarkRequest: async (Remark) => {
+    set({ ListProduct: null, isLoading: true });
     try {
-      set({ ListProduct: null });
       const res = await axios.get(`/api/ProductListByRemark/${Remark}`);
-      set({ ListProduct: res.data?.status === "success" ? res.data.data : [] });
+      set({ ListProduct: res.data?.status === "success" ? res.data.data : [], isLoading: false });
     } catch (error) {
       console.error(error);
-      set({ ListProduct: [] });
+      set({ ListProduct: [], isLoading: false });
     }
   },
 
   ListByProductBrandRequest: async (BrandID) => {
+    set({ ListProduct: null, isLoading: true });
     try {
-      set({ ListProduct: null });
       const res = await axios.get(`/api/ProductListByBrand/${BrandID}`);
-      set({ ListProduct: res.data?.status === "success" ? res.data.data : [] });
+      set({ ListProduct: res.data?.status === "success" ? res.data.data : [], isLoading: false });
     } catch (error) {
       console.error(error);
-      set({ ListProduct: [] });
+      set({ ListProduct: [], isLoading: false });
     }
   },
 
   ListByProductCategoryRequest: async (CategoryID) => {
+    set({ ListProduct: null, isLoading: true });
     try {
-      set({ ListProduct: null });
       const res = await axios.get(`/api/ProductListByCategory/${CategoryID}`);
-      set({ ListProduct: res.data?.status === "success" ? res.data.data : [] });
+      set({ ListProduct: res.data?.status === "success" ? res.data.data : [], isLoading: false });
     } catch (error) {
       console.error(error);
-      set({ ListProduct: [] });
+      set({ ListProduct: [], isLoading: false });
     }
   },
 
   ListByProductSimilarRequest: async (CategoryID) => {
+    set({ ListProduct: null, isLoading: true });
     try {
-      set({ ListProduct: null });
       const res = await axios.get(`/api/ProductListBySimilar/${CategoryID}`);
-      set({ ListProduct: res.data?.status === "success" ? res.data.data : [] });
+      set({ ListProduct: res.data?.status === "success" ? res.data.data : [], isLoading: false });
     } catch (error) {
       console.error(error);
-      set({ ListProduct: [] });
+      set({ ListProduct: [], isLoading: false });
     }
   },
 
   ListByProductKeywordRequest: async (Keyword) => {
+    set({ ListProduct: null, SearchKeyword: Keyword, isLoading: true });
     try {
-      set({ ListProduct: null, SearchKeyword: Keyword });
       const res = await axios.get(`/api/ProductListByKeyword/${Keyword}`);
-      set({ ListProduct: res.data?.status === "success" ? res.data.data : [] });
+      set({ ListProduct: res.data?.status === "success" ? res.data.data : [], isLoading: false });
     } catch (error) {
       console.error(error);
-      set({ ListProduct: [] });
+      set({ ListProduct: [], isLoading: false });
     }
   },
 
+  // ===== Product Details =====
   ProductDetailsRequest: async (ProductID) => {
+    set({ Details: null });
     try {
-      set({ ProductDetailsData: {} });
       const res = await axios.get(`/api/ProductDetails/${ProductID}`);
-      set({ ProductDetailsData: res.data?.status === "success" ? res.data.data : {} });
+      if(res.data?.status === "success") {
+        set({ Details: res.data.data });
+      }
     } catch (error) {
-      console.error(error);
-      set({ ProductDetailsData: {} });
+      console.error("ProductDetailsRequest error:", error);
+      set({ Details: null });
     }
   },
 
+  // ===== Product Reviews =====
   ProductReviewListRequest: async (ProductID) => {
+    set({ ProductReviews: [], isLoading: true });
     try {
-      set({ ProductReviews: {} });
       const res = await axios.get(`/api/ProductReviewList/${ProductID}`);
-      set({ ProductReviews: res.data?.status === "success" ? res.data.data : {} });
+      set({
+        ProductReviews: res.data?.status === "success" ? res.data.data : [],
+        isLoading: false
+      });
     } catch (error) {
-      console.error(error);
-      set({ ProductReviews: {} });
+      console.error("ProductReviewListRequest error:", error);
+      set({ ProductReviews: [], isLoading: false });
     }
   },
 
@@ -127,26 +143,22 @@ const ProductStore = create((set, get) => ({
     }
   },
 
-  SetSearchKeyword: (Keyword) => {
-    set({ SearchKeyword: Keyword });
+  // ===== Search Keyword =====
+  SetSearchKeyword: (Keyword) => set({ SearchKeyword: Keyword }),
+
+  // ===== List by Filter =====
+  ListByFilterRequest: async (postBody) => {
+    set({ ListProduct: null, isLoading: true });
+    try {
+      const res = await axios.post("/api/ProductListByFilter", postBody);
+      set({ ListProduct: res.data?.status === "success" ? res.data.data : [], isLoading: false });
+      return res.data;
+    } catch (error) {
+      console.error("Filter request error:", error);
+      set({ ListProduct: [], isLoading: false });
+      return { status: "error", message: "Filter request failed" };
+    }
   },
-
-
-ListByFilterRequest: async (postBody) => {
-  try {
-    set({ ListProduct: null });
-    const res = await axios.post("/api/ProductListByFilter", postBody);
-    set({
-      ListProduct: res.data?.status === "success" ? res.data.data : [],
-    });
-    return res.data;
-  } catch (error) {
-    console.error("Filter request error:", error);
-    set({ ListProduct: [] });
-    return { status: "error", message: "Filter request failed" };
-  }
-}
-
 }));
 
 export default ProductStore;
