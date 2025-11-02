@@ -7,39 +7,46 @@ const {
   ReadUserProfileService,
 } = require("../services/UserServices");
 
+// Send OTP
 exports.UserOTP = async (req, res) => {
-  let result = await UserOTPService(req);
+  const result = await UserOTPService(req);
   res.status(200).json(result);
 };
 
+// Verify OTP
 exports.UserVerifyLogin = async (req, res) => {
-  let result = await VerifyOTPService(req);
-  if (result.status === "success") {
-    let cookieOptions = {
-      expires: new Date(Date.now() + 30*24*60*60*1000),
-      httpOnly: true,
-    };
-    res.cookie("token", result.token, cookieOptions);
+  try {
+    const result = await VerifyOTPService(req);
+    if (result.status === "success") {
+      const cookieOptions = { expires: new Date(Date.now() + 30*24*60*60*1000), httpOnly: true };
+      res.cookie("token", result.token, cookieOptions);
+    }
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ status: "error", message: "Controller error", error: error.message });
   }
-  res.status(200).json(result);
 };
 
+// Logout
 exports.UserLogout = async (req, res) => {
-  let result = await LogoutService(res);
+  const result = await LogoutService(res);
   res.status(200).json(result);
 };
 
+// Register User Profile
 exports.UserRegister = async (req, res) => {
-  let result = await CreateUserService(req);
+  const result = await CreateUserService(req);
   res.status(201).json(result);
 };
 
+// Update Profile
 exports.UserUpdateProfile = async (req, res) => {
-  let result = await UpdateUserProfileService(req);
+  const result = await UpdateUserProfileService(req);
   res.status(200).json(result);
 };
 
+// Read Profile
 exports.UserReadProfile = async (req, res) => {
-  let result = await ReadUserProfileService(req);
+  const result = await ReadUserProfileService(req);
   res.status(200).json(result);
 };

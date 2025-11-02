@@ -26,6 +26,7 @@ router.post("/ProductListByFilter", ProductController.ProductListByFilter);
 
 
 //  User Routes 
+
 router.get("/UserOTP/:email", UserController.UserOTP);
 router.get("/UserVerifyLogin/:email/:otp", UserController.UserVerifyLogin);
 router.get("/UserLogout", AuthVerify, UserController.UserLogout);
