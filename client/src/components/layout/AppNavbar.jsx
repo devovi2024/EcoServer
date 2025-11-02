@@ -11,7 +11,6 @@ const AppNavbar = () => {
   const handleSearchChange = (e) => {
     const value = e.target.value;
     SetSearchKeyword(value);
-
     if (value.trim() !== "") {
       navigate(`/by-keyword/${encodeURIComponent(value)}`);
     }
@@ -28,7 +27,7 @@ const AppNavbar = () => {
         <div className="flex flex-1 items-center justify-between flex-wrap mt-2 md:mt-0">
 
           {/* Links */}
-          <ul className="flex flex-wrap items-center gap-4 md:gap-6 text-gray-200 font-semibold">
+          <ul className="hidden md:flex flex-wrap items-center gap-6 text-gray-200 font-semibold">
             <li><Link to="/" className="hover:text-yellow-400 transition">Home</Link></li>
             <li><Link to="/blog" className="hover:text-yellow-400 transition">Blog</Link></li>
             <li><Link to="/about" className="hover:text-yellow-400 transition">About</Link></li>
@@ -36,7 +35,7 @@ const AppNavbar = () => {
           </ul>
 
           {/* Search */}
-          <div className="flex-1 mx-4">
+          <div className="flex-1 mx-4 hidden md:block">
             <input
               type="text"
               value={SearchKeyword || ""}
@@ -67,7 +66,7 @@ const AppNavbar = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="w-full bg-[#2c3e50] text-yellow-200 px-4 py-4 mt-2">
+          <div className="w-full bg-[#2c3e50] text-yellow-200 px-4 py-4 mt-2 md:hidden">
             <input
               type="text"
               value={SearchKeyword || ""}
@@ -80,6 +79,7 @@ const AppNavbar = () => {
               <li><Link to="/blog" onClick={() => setIsMenuOpen(false)}>Blog</Link></li>
               <li><Link to="/about" onClick={() => setIsMenuOpen(false)}>About</Link></li>
               <li><Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link></li>
+              <li><Link to="/login" onClick={() => setIsMenuOpen(false)}>Login</Link></li>
             </ul>
           </div>
         )}

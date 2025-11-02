@@ -6,6 +6,8 @@ import ProductByBrand from "./pages/product-by-brand";
 import ProductByCategory from "./pages/product-by-category";
 import ProductByKeyword from "./pages/product-by-keyword";
 import ProductDetails from "./pages/product-details";
+import LoginPage from "./pages/login-page";
+import OTPPage from "./pages/otp-page";
 
 const NotFound = () => (
   <div className="min-h-screen flex items-center justify-center text-gray-500 text-xl font-semibold">
@@ -18,6 +20,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/otp" element={<OTPPage />} />
         <Route path="/by-brand/:id" element={<ProductByBrand />} />
         <Route path="/by-category/:id" element={<ProductByCategory />} />
         <Route path="/by-keyword/:keyword" element={<ProductByKeyword />} />
