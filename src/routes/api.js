@@ -30,9 +30,10 @@ router.post("/ProductListByFilter", ProductController.ProductListByFilter);
 router.get("/UserOTP/:email", UserController.UserOTP);
 router.get("/UserVerifyLogin/:email/:otp", UserController.UserVerifyLogin);
 router.get("/UserLogout", AuthVerify, UserController.UserLogout);
-router.post("/UserRegister", UserController.UserRegister);
+router.post("/UserCreate", AuthVerify, UserController.UserCreate); 
 router.post("/UserUpdateProfile", AuthVerify, UserController.UserUpdateProfile);
 router.get("/UserReadProfile", AuthVerify, UserController.UserReadProfile);
+
 
 //  Wishlist Routes 
 router.get("/WishList", AuthVerify, WishListController.WishList);

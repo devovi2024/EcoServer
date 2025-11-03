@@ -1,5 +1,12 @@
 import Swal from 'sweetalert2';
 
+export function unauthorized(code){
+  if(code === 401){
+    sessionStorage.clear();
+    localStorage.clear();
+    window.location.href="/login"
+  }
+}
 export const setEmail = (email) => {
   localStorage.setItem("email", email);
 };

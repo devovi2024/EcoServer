@@ -18,12 +18,19 @@ exports.UserVerifyLogin = async (req, res) => {
   try {
     const result = await VerifyOTPService(req);
     if (result.status === "success") {
-      const cookieOptions = { expires: new Date(Date.now() + 30*24*60*60*1000), httpOnly: true };
+      const cookieOptions = {
+        expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        httpOnly: true,
+      };
       res.cookie("token", result.token, cookieOptions);
     }
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ status: "error", message: "Controller error", error: error.message });
+    res.status(500).json({
+      status: "error",
+      message: "Controller error",
+      error: error.message,
+    });
   }
 };
 
@@ -33,8 +40,8 @@ exports.UserLogout = async (req, res) => {
   res.status(200).json(result);
 };
 
-// Register User Profile
-exports.UserRegister = async (req, res) => {
+// Register / Create Profile
+exports.UserCreate = async (req, res) => {
   const result = await CreateUserService(req);
   res.status(201).json(result);
 };

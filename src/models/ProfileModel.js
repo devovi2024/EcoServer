@@ -21,3 +21,10 @@ const DataSchema = mongoose.Schema({
 
 const ProfileModel = mongoose.model('profiles', DataSchema);
 module.exports = ProfileModel;
+
+
+
+
+
+
+

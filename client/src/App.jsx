@@ -8,7 +8,7 @@ import ProductByKeyword from "./pages/product-by-keyword";
 import ProductDetails from "./pages/product-details";
 import LoginPage from "./pages/login-page";
 import OTPPage from "./pages/otp-page";
-
+import Profile from './pages/profile'
 const NotFound = () => (
   <div className="min-h-screen flex items-center justify-center text-gray-500 text-xl font-semibold">
     404 - Page Not Found
@@ -22,6 +22,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/otp" element={<OTPPage />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/by-brand/:id" element={<ProductByBrand />} />
         <Route path="/by-category/:id" element={<ProductByCategory />} />
         <Route path="/by-keyword/:keyword" element={<ProductByKeyword />} />

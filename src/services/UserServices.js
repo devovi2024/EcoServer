@@ -1,7 +1,7 @@
 const { EmailSend } = require("../utility/EmailHelper");
 const UserModel = require("../models/UserModel");
 const ProfileModel = require("../models/ProfileModel");
-const { EncodeToken } = require("../utility/TokenHelper");
+const { EncodeToken, DecodeToken } = require("../utility/TokenHelper");
 
 // Send OTP
 const UserOTPService = async (req) => {
@@ -10,11 +10,7 @@ const UserOTPService = async (req) => {
     const code = Math.floor(100000 + Math.random() * 900000).toString();
 
     await EmailSend(email, `Your OTP code is: ${code}`, "Your OTP Code");
-    await UserModel.updateOne(
-      { email },
-      { $set: { otp: code } },
-      { upsert: true }
-    );
+    await UserModel.updateOne({ email }, { $set: { otp: code } }, { upsert: true });
 
     return { status: "success", message: "6-digit OTP sent successfully" };
   } catch (error) {
@@ -52,12 +48,20 @@ const LogoutService = async (res) => {
   }
 };
 
-// Create Profile
+//  Create Profile (fixed)
 const CreateUserService = async (req) => {
   try {
-    const user_id = req.headers.user_id;
-    const reqBody = req.body;
-    reqBody.userID = user_id;
+    let user_id;
+    if (req.user && req.user.id) {
+      user_id = req.user.id;
+    } else {
+      const token = req.headers["authorization"]?.replace("Bearer ", "") || req.cookies.token;
+      if (!token) throw new Error("No token provided");
+      const decoded = DecodeToken(token);
+      user_id = decoded.user_id || decoded.id;
+    }
+
+    const reqBody = { ...req.body, userID: user_id };
 
     await ProfileModel.updateOne({ userID: user_id }, { $set: reqBody }, { upsert: true });
     return { status: "success", message: "User profile created successfully" };
@@ -69,11 +73,23 @@ const CreateUserService = async (req) => {
 // Update Profile
 const UpdateUserProfileService = async (req) => {
   try {
-    const user_id = req.headers.user_id;
+    let user_id;
+    if (req.user && req.user.id) {
+      user_id = req.user.id;
+    } else {
+      const token = req.headers["authorization"]?.replace("Bearer ", "") || req.cookies.token;
+      if (!token) throw new Error("No token provided");
+      const decoded = DecodeToken(token);
+      user_id = decoded.user_id || decoded.id;
+    }
+
     const reqBody = req.body;
 
     const result = await ProfileModel.updateOne({ userID: user_id }, { $set: reqBody });
-    if (result.matchedCount === 0) return { status: "fail", message: "Profile not found" };
+    if (result.matchedCount === 0) {
+      await ProfileModel.create({ ...reqBody, userID: user_id });
+      return { status: "success", message: "User profile created successfully" };
+    }
 
     return { status: "success", message: "User profile updated successfully" };
   } catch (error) {
@@ -84,7 +100,16 @@ const UpdateUserProfileService = async (req) => {
 // Read Profile
 const ReadUserProfileService = async (req) => {
   try {
-    const user_id = req.headers.user_id;
+    let user_id;
+    if (req.user && req.user.id) {
+      user_id = req.user.id;
+    } else {
+      const token = req.headers["authorization"]?.replace("Bearer ", "") || req.cookies.token;
+      if (!token) throw new Error("No token provided");
+      const decoded = DecodeToken(token);
+      user_id = decoded.user_id || decoded.id;
+    }
+
     const result = await ProfileModel.findOne({ userID: user_id });
     if (!result) return { status: "fail", message: "User profile not found" };
 

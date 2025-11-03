@@ -1,9 +1,9 @@
 import React from "react";
-import SubmitButton from "../layout/SubmitButton";
+import { useNavigate } from "react-router-dom";
 import UserStore from "../../store/UserStore";
-import Validation from "../../utility/validation";
-import { failAlert } from "../../utility/helper";
-import { useNavigate } from "react-router";
+import SubmitButton from "../layout/SubmitButton";
+import Validation from "../../utility/Validation";
+import { failAlert } from "../../utility/Helper";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -12,9 +12,12 @@ const LoginForm = () => {
   const onFormSubmit = async () => {
     if (!Validation.isEmail(LoginFormValue.email)) {
       failAlert("Enter a valid email address");
-    } else {
-      const res = await UserOTPRequest(LoginFormValue.email);
-      if (res) navigate("/otp");
+      return;
+    }
+
+    const res = await UserOTPRequest(LoginFormValue.email);
+    if (res) {
+      navigate("/otp");
     }
   };
 
@@ -24,8 +27,8 @@ const LoginForm = () => {
       <input
         type="email"
         placeholder="Enter your email"
-        onChange={(e) => LoginFormOnChange("email", e.target.value)}
         value={LoginFormValue.email}
+        onChange={(e) => LoginFormOnChange("email", e.target.value)}
         className="w-full p-3 border rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       <SubmitButton
